@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Indian Stock Market — 110+ Concepts Explained Simply</title>
+    <meta name="description" content="Interactive guide to the Indian stock market. 110+ concepts across 10 chapters — fundamentals, technical analysis, momentum, ML, insider signals, economy — explained so a 10-year-old can understand.">
+    <meta name="keywords" content="Indian stock market, NSE, BSE, fundamental analysis, technical analysis, momentum investing, machine learning stocks, stock screening, Nifty 50, learn investing">
+    <meta name="author" content="Anindya Chatterjee">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Learn Indian Stock Market — 110+ Concepts Explained Simply">
+    <meta property="og:description" content="Interactive guide covering fundamentals, technicals, momentum, ML, insider signals, and macroeconomics. Written for everyone from beginners to curious intermediates.">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div>
+            <div class="site-title">📚 Learn <span>Indian Stock Market</span></div>
+            <div class="site-subtitle">110+ concepts across 10 chapters — explained so a 10-year-old can understand</div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">
+            <span id="themeIcon">☀️</span>
+            <span class="theme-toggle-label" id="themeLabel">Light</span>
+        </button>
+    </header>
+
+    <!-- Tutorial Header -->
+    <div class="tut-header">
+        <h2>Stock Market from Zero to Hero</h2>
+        <p>Each concept is explained in plain language with real-world analogies, plus practical context showing how analysts and investors actually use it. Click any chapter to explore!</p>
+    </div>
+
+    <!-- Tutorial Content (rendered by tutorial.js) -->
+    <div id="learnContent"></div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>Made with ❤️ for anyone curious about the Indian stock market.</p>
+        <p style="margin-top: 0.4rem;">
+            <a href="https://github.com/canindya/learn-indian-stock-market" target="_blank">GitHub</a>
+            · Open source · No tracking · No ads
+        </p>
+    </footer>
+
+    <script src="tutorial.js"></script>
+    <script>
+        // Theme toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            updateThemeUI(next);
+        }
+
+        function updateThemeUI(theme) {
+            document.getElementById('themeIcon').textContent = theme === 'dark' ? '☀️' : '🌙';
+            document.getElementById('themeLabel').textContent = theme === 'dark' ? 'Light' : 'Dark';
+        }
+
+        // Restore saved theme
+        const saved = localStorage.getItem('theme');
+        if (saved) {
+            document.documentElement.setAttribute('data-theme', saved);
+            updateThemeUI(saved);
+        }
+    </script>
+</body>
+</html>
