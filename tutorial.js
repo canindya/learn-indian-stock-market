@@ -885,5 +885,8 @@ function backToChapterNav() {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// Auto-initialize on DOM ready
-document.addEventListener('DOMContentLoaded', loadTutorial);
+// Expose globally for index.html to call with IntersectionObserver wrapping
+// If loaded standalone (no custom init), auto-initialize on DOM ready
+if (typeof window !== 'undefined' && !window.__tutorialInitOverride) {
+    document.addEventListener('DOMContentLoaded', loadTutorial);
+}

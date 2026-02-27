@@ -13,19 +13,29 @@
     <meta property="og:description" content="Interactive guide covering fundamentals, technicals, momentum, ML, insider signals, and macroeconomics. Written for everyone from beginners to curious intermediates.">
     <meta property="og:type" content="website">
 
-    <!-- Fonts -->
+    <!-- Fonts: Bricolage Grotesque (display) + Space Grotesk (body) — distinctive, not generic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,400;12..96,700;12..96,800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- Animated mesh background orbs -->
+    <div class="mesh-bg" aria-hidden="true">
+        <div class="mesh-orb mesh-orb-1"></div>
+        <div class="mesh-orb mesh-orb-2"></div>
+        <div class="mesh-orb mesh-orb-3"></div>
+    </div>
+
     <!-- Header -->
     <header class="site-header">
         <div>
-            <div class="site-title">📚 Learn <span>Indian Stock Market</span></div>
+            <div class="site-title">
+                <span class="site-title-icon">📚</span>
+                <span>Learn </span><span class="site-title-accent">Indian Stock Market</span>
+            </div>
             <div class="site-subtitle">110+ concepts across 10 chapters — explained so a 10-year-old can understand</div>
         </div>
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light theme">
@@ -34,24 +44,49 @@
         </button>
     </header>
 
-    <!-- Tutorial Header -->
-    <div class="tut-header">
-        <h2>Stock Market from Zero to Hero</h2>
-        <p>Each concept is explained in plain language with real-world analogies, plus practical context showing how analysts and investors actually use it. Click any chapter to explore!</p>
-    </div>
+    <!-- Hero -->
+    <section class="hero">
+        <h1 class="hero-title">
+            Stock Market<br>
+            <span class="hero-gradient">from Zero to Hero</span>
+        </h1>
+        <p class="hero-desc">Each concept is explained in plain language with real-world analogies, plus practical context showing how analysts and investors actually use it.</p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="hero-stat-num">110+</span>
+                <span class="hero-stat-label">Concepts</span>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat">
+                <span class="hero-stat-num">10</span>
+                <span class="hero-stat-label">Chapters</span>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat">
+                <span class="hero-stat-num">0</span>
+                <span class="hero-stat-label">Jargon</span>
+            </div>
+        </div>
+    </section>
 
     <!-- Tutorial Content (rendered by tutorial.js) -->
     <div id="learnContent"></div>
 
     <!-- Footer -->
     <footer class="site-footer">
-        <p>Made with ❤️ for anyone curious about the Indian stock market.</p>
-        <p style="margin-top: 0.4rem;">
-            <a href="https://github.com/canindya/learn-indian-stock-market" target="_blank">GitHub</a>
-            · Open source · No tracking · No ads
-        </p>
+        <div class="footer-inner">
+            <p>Made with ❤️ for anyone curious about the Indian stock market.</p>
+            <p class="footer-links">
+                <a href="https://github.com/canindya/learn-indian-stock-market" target="_blank">GitHub</a>
+                <span class="footer-dot">·</span> Open source
+                <span class="footer-dot">·</span> No tracking
+                <span class="footer-dot">·</span> No ads
+            </p>
+        </div>
     </footer>
 
+    <!-- Tell tutorial.js we'll handle initialization -->
+    <script>window.__tutorialInitOverride = true;</script>
     <script src="tutorial.js"></script>
     <script>
         // Theme toggle
@@ -74,6 +109,30 @@
         if (saved) {
             document.documentElement.setAttribute('data-theme', saved);
             updateThemeUI(saved);
+        }
+
+        // Scroll-triggered reveal via Intersection Observer
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08 });
+
+        // Initialize tutorial + attach observers
+        function initApp() {
+            loadTutorial();
+            document.querySelectorAll('.tut-chapter-section, .tut-chapter-card').forEach(el => {
+                revealObserver.observe(el);
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
         }
     </script>
 </body>
