@@ -790,7 +790,7 @@ function renderChapter(ch, idx) {
     let html = `<div class="tut-chapter-section" id="tut-chapter-${idx}">`;
 
     // Header (clickable to toggle)
-    html += `<div class="tut-chapter-section-header" style="--tut-color:${ch.color}" onclick="scrollToChapter(${idx})">
+    html += `<div class="tut-chapter-section-header" style="--tut-color:${ch.color}" onclick="toggleChapter(${idx})">
         <span class="tut-section-emoji">${ch.emoji}</span>
         <div class="tut-section-info">
             <div class="tut-section-title">Chapter ${idx + 1}: ${ch.title}</div>
@@ -858,22 +858,28 @@ function renderTermCard(term, color) {
 }
 
 function scrollToChapter(idx) {
+    // Called from chapter nav cards — scroll first, then expand
     const section = document.getElementById('tut-chapter-' + idx);
     if (!section) return;
 
-    const isOpen = section.classList.contains('tut-open');
-
-    if (isOpen) {
-        // Toggle closed
+    if (section.classList.contains('tut-open')) {
         section.classList.remove('tut-open');
-    } else {
-        // Open this chapter
-        section.classList.add('tut-open');
-        // Scroll to it after a brief delay for the animation to start
-        setTimeout(() => {
-            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 50);
+        return;
     }
+
+    // Scroll while section is still collapsed (stable document height)
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Open AFTER scroll settles — avoids fighting the height transition
+    setTimeout(() => {
+        section.classList.add('tut-open');
+    }, 400);
+}
+
+function toggleChapter(idx) {
+    // Called from section headers — user is already here, just toggle
+    const section = document.getElementById('tut-chapter-' + idx);
+    if (!section) return;
+    section.classList.toggle('tut-open');
 }
 
 function backToChapterNav() {

@@ -18,3 +18,4 @@
 - **Android mobile**: Disabled `:hover` transforms on touch devices that would stick after tap
 - **Accessibility**: Added `prefers-reduced-motion` media query — disables all animations and shows content immediately
 - **CSS**: Fixed invalid `--glass` custom property syntax
+- **Mobile scroll**: Fixed erratic scrolling when tapping chapters — `scrollIntoView` was fighting the `max-height` expansion transition, causing the page to bounce up and down
