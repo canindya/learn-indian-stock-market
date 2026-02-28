@@ -19,3 +19,5 @@
 - **Accessibility**: Added `prefers-reduced-motion` media query — disables all animations and shows content immediately
 - **CSS**: Fixed invalid `--glass` custom property syntax
 - **Mobile scroll**: Fixed erratic scrolling when tapping chapters — `scrollIntoView` was fighting the `max-height` expansion transition, causing the page to bounce up and down
+- **Mobile performance**: Disabled `scroll-behavior: smooth` on mobile — it was overriding native inertial scrolling, making the page feel unresponsive
+- **Mobile performance**: Stopped orb animations and removed third orb on mobile to free up GPU for scrolling
