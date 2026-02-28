@@ -31,7 +31,7 @@
     --shadow-glow: 0 0 60px var(--accent-glow);
     --font: 'Space Grotesk', sans-serif;
     --font-display: 'Bricolage Grotesque', sans-serif;
-    --glass: backdrop-filter: blur(16px);
+    --glass: blur(16px);
     --gauge-bg: rgba(255,255,255,0.04);
     --gauge-gradient: linear-gradient(90deg, var(--red), var(--accent), var(--green));
 }
@@ -58,7 +58,7 @@
     --gauge-bg: rgba(0,0,0,0.04);
 }
 
-html { font-size: 16px; scroll-behavior: smooth; }
+html { font-size: 16px; scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
     font-family: var(--font);
@@ -71,6 +71,8 @@ body {
     margin: 0 auto;
     position: relative;
     overflow-x: hidden;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -716,13 +718,51 @@ body {
     .hero-desc { font-size: 1.05rem; }
     .hero-stats { gap: 1.5rem; }
     .hero-stat-num { font-size: 2rem; }
-    .mesh-orb { opacity: 0.2; }
+
+    /* Drastically reduce GPU load on mobile */
+    .mesh-orb {
+        opacity: 0.12;
+        filter: blur(60px);
+        animation-duration: 60s;
+    }
+    .mesh-orb-1 { width: 300px; height: 300px; }
+    .mesh-orb-2 { width: 250px; height: 250px; }
+    .mesh-orb-3 { width: 200px; height: 200px; }
+
+    /* Replace expensive backdrop-filter with solid backgrounds on mobile */
+    .tut-chapter-card,
+    .tut-chapter-section,
+    .tut-term-card,
+    .theme-toggle {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: var(--bg-card-solid);
+    }
+
+    /* Disable hover transforms on touch devices — they stick on tap */
+    .tut-chapter-card:hover { transform: none; }
+    .tut-term-card:hover { transform: none; }
+    .theme-toggle:hover { transform: none; }
 }
 
 @media (max-width: 420px) {
     .hero-title { font-size: 2rem; }
     .hero-stat-divider { display: none; }
     .hero-stats { gap: 1rem; }
+    .tut-chapter-card { padding: 1.25rem; }
+    .tut-chapter-section-header { gap: 0.65rem; }
+}
+
+/* Prefers-reduced-motion: skip all animations, show content immediately */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .tut-chapter-card,
+    .tut-chapter-section { opacity: 1; transform: none; }
+    html { scroll-behavior: auto; }
 }
 
 

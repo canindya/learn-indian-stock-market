@@ -124,9 +124,21 @@
         // Initialize tutorial + attach observers
         function initApp() {
             loadTutorial();
-            document.querySelectorAll('.tut-chapter-section, .tut-chapter-card').forEach(el => {
+            const targets = document.querySelectorAll('.tut-chapter-section, .tut-chapter-card');
+            targets.forEach(el => {
                 revealObserver.observe(el);
             });
+
+            // Safety net: if elements haven't revealed after 1.5s, force-reveal them.
+            // Fixes Android browsers where IntersectionObserver can be slow to fire
+            // when the GPU is under load from blur/backdrop-filter effects.
+            setTimeout(() => {
+                targets.forEach(el => {
+                    if (!el.classList.contains('revealed')) {
+                        el.classList.add('revealed');
+                    }
+                });
+            }, 1500);
         }
 
         if (document.readyState === 'loading') {
